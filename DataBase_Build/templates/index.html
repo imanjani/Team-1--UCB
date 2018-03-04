@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <title>Albert Doan JS-hw</title>
+</head>
+<style>
+  #navbar {
+  padding: 2em;
+  background-color: #eee;
+  margin-bottom: 2em;
+  margin-top: 2em;
+  text-decoration-color: black;
+  -webkit-text-fill-color: black;
+  border-color: black;
+}
+
+  #selDataset {
+    border-color: black;
+    background-color: lightblue;
+    text-decoration-color: black;
+    
+  }
+
+</style>
+<body>
+  <div class="container">
+    <div class="jumbotron text-center">
+      <h1>Belly Button Biodiversity</h1>
+      <h1>Dashboard</h1>
+      <p>{{text}}</p>
+    </div>
+    <div class="col-md-2 col-md-4 col-md-12">
+      <nav class="btn btn-primary" id="navbar"><strong>Select Sample<br></strong>
+        <select class="btn btn-primary dropdown-toggle" id="selDataset" onchange="optionChanged(this.value)"></select>
+      </nav>
+    </div>
+
+    <div>
+      <div class="col-md-12">
+        <h3>{{text2}}</h3></div>
+        <div>
+          <div class="col-md-6 col-md-12">
+            <div id='infoTable'></div>
+          </div>
+          <div class="col-md-6 col-md-12">
+            <div id="plot-gauge"></div>
+          </div>
+          <div class="col-md-12"></div><div class="col-md-12"><div class="col-md-12"><div class="col-md-12"><div class="col-md-12"></div>
+          <div id="plot-1"></div>
+          <div id="plot-2"></div>
+        </div>
+      <div class="col-md-12">
+        <!-- <h3><a href="#">{{text2}}</a></h3> -->
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.7.3/d3.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- <script src="plots.js"></script> -->
+    <script type="text/javascript">
+
+    var queryURL = "http://127.0.0.1:5000/names";
+    
+    var $pagebody = document.querySelector("#selDataset");
+            $pagebody.innerHTML = "";
+
+    d3.json(queryURL, function (error, response) {
+      if (error) return console.warn(error);
+      console.log("Sample name retrieval", response);
+      for (var i = 0; i < response.length; i++) {
+        var sample_response = response[i];
+        var selectClick = document.getElementById("selDataset");
+        var selectOption = document.createElement("option");
+        selectOption.value = sample_response;
+        selectOption.innerHTML = sample_response;
+        selectClick.append(selectOption);
+      }
+    });
+
+    function optionChanged(value) {
+      var sampleURL = "http://127.0.0.1:5000/samples/" + value;
+      var otuURL = "http://127.0.0.1:5000/otu";
+      var nameURL = "http://127.0.0.1:5000/metadata/" + value;
+
+      console.log(sampleURL);
+      Plotly.d3.json(sampleURL, function (error, response) {
+        if (error) return console.warn(error);
+        console.log("Sample value retrieval", response);
+        sample_otu_id = response[0]['otu_ids'];
+        top10_sample_otu_id = sample_otu_id.slice(0,10);
+        top40_sample_otu_id = sample_otu_id.slice(0,40);
+        sample_values = response[0]['sample_values'];
+        top10_sample_values = sample_values.slice(0,10);
+        top40_sample_values = sample_values.slice(0,40);
+        console.log("sample URL (otu) works", top10_sample_otu_id);
+        console.log("sample URL works", top10_sample_values);
+      })
+
+      d3.json(nameURL, function (error, response) {
+        if (error) return console.warn(error);
+        console.log("METADATA retrieval", response);
+        var objectCount = Object.keys(response[0]).length;
+        console.log("number of keys", objectCount);
+        var objectKeys = Object.keys(response[0]);
+        console.log(objectKeys);
+        var objectValues = Object.values(response[0]);
+        console.log(objectValues);
+
+        var objectvalues = [objectKeys, objectValues];
+//METADATA CHART
+        var data_3 = [{
+          type: 'table',
+          header: {values: ["Metadata Info"], 
+          align: ["left", "center"],
+          line: {width:3, color: "black"}, 
+          fill: {color: 'aqua'}
+        },
+          cells: {values: objectvalues}
+        }]
+
+        Plotly.plot('infoTable', data_3);
+
+      })
+
+      Plotly.d3.json(otuURL, function (error, response) {
+        if (error) return console.warn(error);
+        console.log("Sample value retrieval", response);
+        top10_sample_otu_names = [];
+        for (var i = 0; i<top10_sample_otu_id.length; i++) {
+          var index = top10_sample_otu_id[i];
+          console.log(index);
+          top10_sample_otu_names.push(response[index]);  
+        }
+        top40_sample_otu_names = [];
+        for (var i = 0; i<top40_sample_otu_id.length; i++) {
+          var index = top40_sample_otu_id[i];
+          console.log(index);
+          top40_sample_otu_names.push(response[index]);  
+        }
+        console.log("otuURL works", top10_sample_otu_names);
+
+        var trace, data, layout;
+        const xAxis = [];
+        const yAxis = [];
+        var radii = [];
+        const colors = [];
+        var bubbleText = [];
+        var bubbleColor = [];
+//PIE CHART
+        data = [{
+            values: top10_sample_values,
+            labels: top10_sample_otu_id,
+            type: "pie"
+        }];
+
+        layout = { height: 500, width: 500
+        }
+
+        Plotly.newPlot("plot-1", data, layout);
+
+//BUBBLE PLOTTTING
+        for (var i=0; i<top40_sample_otu_id.length; i++) {
+          xAxis.push(top40_sample_otu_id[i]);
+          yAxis.push(top40_sample_values[i]);
+          if (top40_sample_values[i] > 20) {
+            radii.push(top40_sample_values[i]*.7)
+          }
+          else {
+          radii.push(top40_sample_values[i]*4);
+          }
+          bubbleColor.push(`rgb(${i+120},${255-i*10},${(i*10+200)}`);
+        }
+        
+        const data_2 = [{
+        x: xAxis,
+        y: yAxis,
+        text: top40_sample_otu_names, 
+        mode: "markers",
+        marker: {
+          size: radii, 
+          color: bubbleColor
+          },
+        }];
+        const layout_2 = {
+          xaxis: {title: "OTU_IDs Number", size: 22},
+          yaxis: {title: "Sample Count", size: 22},
+          title: "Sample Generated Data",
+          showlegend: false,
+          height: 1000,
+          width: 1000
+        };
+        
+        Plotly.newPlot("plot-2", data_2, layout_2);
+//GAUGE CHART
+        var wfreqURL = "/wfreq/" + value;
+
+        Plotly.d3.json(wfreqURL, function (error, response) {
+          var level = response[value];
+          console.log("level is: ", level);
+          degrees = 180-(level*18), radius = .5;
+          var radians = degrees * Math.PI / 180;
+          var x = radius * Math.cos(radians);
+          var y = radius * Math.sin(radians);
+
+          var mainPath = 'M -.0 -0.025 L .0 0.025 L ',
+          pathX = String(x),
+          space = ' ',
+          pathY = String(y),
+          pathEnd = ' Z';
+          var path = mainPath.concat(pathX,space,pathY,pathEnd);
+
+          var gaugedata = [{ type: 'scatter',
+          x: [0], y:[0],
+          marker: {size: 28, color:'850000'},
+          showlegend: false,
+          name: '# of washes',
+          text: level,
+          hoverinfo: 'text+name'},
+
+          { values: [1, 1, 1, 1, 1, 1, 1, 1,1,1,10],
+          rotation: 92,
+          text: ['10+', '5-6', '9-10', '7-8',
+                    '6-7', '0-1', '4-5', '3-4', '2-3', '1-2'],
+          textinfo: 'text',
+          textposition:'inside',
+          marker: {colors:['rgba(14, 127, 0, .5)', 'rgba(55, 132, 5, .5)', 'rgba(110, 154, 22, .5)',
+                          'rgba(140, 171, 30, .5)', 'rgba(170, 202, 42, .5)', 'rgba(185, 202, 68, .5)',
+                          'rgba(202, 209, 95, .5)', 'rgba(210, 206, 145, .5)', 'rgba(232, 226, 202, .5)',
+                          'rgba(240, 226, 224, .5)', 'rgba(255, 255, 255, 0)']},
+          labels: ['10+', '5-6', '9-10', '7-8',
+                  '6-7', '0-1', '4-5', '3-4', '2-3', '1-2'],
+          hoverinfo: 'label',
+          hole: .4,
+          type: 'pie',
+          showlegend: false
+        }];
+
+        var layout = {
+          shapes:[{
+          type: 'path',
+          path: path,
+          fillcolor: '850000',
+          line: {
+            color: '850000'
+            }
+          }],
+          title: "Number of washes",
+          height: 600,
+          width: 600,
+          xaxis: {zeroline:false, showticklabels:false,
+                    showgrid: false, range: [-1, 1]},
+          yaxis: {zeroline:false, showticklabels:false,
+                    showgrid: false, range: [-1, 1]}
+        };
+
+        Plotly.newPlot('plot-gauge', gaugedata, layout);
+        })  
+        
+      
+
+
+        //KEEP
+        });
+      //KEEP
+      }
+
+
+    </script>
+  </div>
+</body>
+</html>
