@@ -30,7 +30,7 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="{{ url_for('home') }}">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('ourmap') }}">Map</a>
@@ -70,7 +70,7 @@
             </div>
           </div>
           <div class="carousel-item">
-            <img class="second-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Second slide">
+            <img class="second-slide" src="static/images/map3.png" alt="Second slide">
             <div class="container">
               <div class="carousel-caption">
                 <h1>Another example headline.</h1>
@@ -147,7 +147,7 @@
             <p class="lead">One tap and a car comes directly to you. Hop in—your driver knows exactly where to go. And when you get there, just step out. Payment is completely seamless.</p>
           </div>
           <div class="col-md-5">
-            <img class="featurette-image img-fluid mx-auto" src="static/images/uber.jpg" alt="Generic placeholder image">
+            <img class="featurette-image img-fluid mx-auto" src="static/images/uber.jpg" alt="Generic placeholder image" width="400" height="400">
           </div>
         </div>
 
@@ -159,7 +159,7 @@
             <p class="lead">With thousands of public bikes for use across San Francisco, East Bay and San Jose. Our bike share is designed with convenience in mind; it’s a fun and affordable way to get around town.</p>
           </div>
           <div class="col-md-5 order-md-1">
-            <img class="featurette-image img-fluid mx-auto" src="static/images/fbike.jpg" alt="Generic placeholder image">
+            <img class="featurette-image img-fluid mx-auto" src="static/images/fbike.jpg" alt="Generic placeholder image"  width="400" height="400">
           </div>
         </div>
 
@@ -171,7 +171,7 @@
             <p class="lead">Showers this morning, becoming a steady rain during the afternoon hours. High 52F. Winds SSW at 15 to 25 mph. Chance of rain 80%.</p>
           </div>
           <div class="col-md-5">
-            <img class="featurette-image img-fluid mx-auto" src="static/images/sf_weather2.jpg" alt="Generic placeholder image">
+            <img class="featurette-image img-fluid mx-auto" src="static/images/sf_weather2.jpg" alt="Generic placeholder image" width="400" height="400">
           </div>
         </div>
 
