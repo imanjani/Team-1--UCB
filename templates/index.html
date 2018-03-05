@@ -23,20 +23,20 @@
 
     <header>
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="#">Comuteeze</a>
+        <a class="navbar-brand" href="#">Commuteeze</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Map</a>
+              <a class="nav-link" href="{{ url_for('ourmap') }}">Map</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Forecast</a>
+              <a class="nav-link" href="{{ url_for('al') }}">al</a>
             </li>
           </ul>
           <form class="form-inline mt-2 mt-md-0">
@@ -60,10 +60,12 @@
             <img class="first-slide" src="static/images/city2.jpeg" alt="First slide">
             <div class="container">
               <div class="carousel-caption text-left">
-
-                <h1 class="home_head"> Welcome to Comuteeze</h1>
-                <p class="home_head p-3 mb-2 bg-secondary">City life can be very stressful. Everybody is always running around like crazy, stuck in traffic jams trying to make meetings, trying to make ends meet, trying to meet deadlines, trying to get kids to and from activities. Comuteeze to the rescue, let us help you find the quickest least stressful way to your next event!! </p>
-                <p><a class="btn btn-sm btn-primary home_btn" href="#" role="button">Sign up today</a></p>
+  
+                  <div class="d-flex">
+                      <h1 class="home_head p-3 mb-2 bg-secondary">Welcome to Commuteeze</h1>
+                     </div>
+                <p class="home_head p-3 mb-2 bg-secondary">City life can be very stressful. Everybody is always running around like crazy, stuck in traffic jams trying to make meetings, trying to make ends meet, trying to meet deadlines, trying to get kids to and from activities. Commuteeze to the rescue, let us help you find the quickest least stressful way to your next event!! </p>
+                <!-- <p><a class="btn btn-sm btn-primary home_btn" href="#" role="button">Sign up today</a></p> -->
               </div>
             </div>
           </div>
@@ -104,28 +106,35 @@
       <!-- Wrap the rest of the page in another container to center all the content. -->
 
       <div class="container marketing">
+          <div class="row">
+              <div class="jumbotron jumbotron-fluid">
+                  <div class="container">
+                    <h1 class="text-center name_circles"><strong>Testimonials</strong></h1>
 
         <!-- Three columns of text below the carousel -->
         <div class="row">
           <div class="col-lg-4">
             <img class="rounded-circle" src="static/images/girl.jpeg" alt="Generic placeholder image" width="140" height="140">
             <h2 class="name_circles">Lucinda S.</h2>
-            <p>Living in the city, I often need different types of transportation. Comuteeze is simple, easy and I love the app. I can't live without it. Much easier than trying to find a normal cab.</p>
+            <p>Living in the city, I often need different types of transportation. Commuteeze is simple, easy and I love the app. I can't live without it. Much easier than trying to find a normal cab.</p>
             <!-- <p><a class="btn btn-lg btn-primary" href="#" role="button">View details &raquo;</a></p> -->
           </div><!-- /.col-lg-4 -->
           <div class="col-lg-4">
             <img class="rounded-circle" src="static/images/guy.jpeg" alt="Generic placeholder image" width="140" height="140">
             <h2 class="name_circles">Stephan G.</h2>
-            <p>I was on business in San Francisco, CA this past week and used Comuteeze for all my transportation needs. It was a wonderful and fulfilling experience. I will use this service again on future business trips.</p>
+            <p>I was on business in San Francisco, CA this past week and used Commuteeze for all my transportation needs. It was a wonderful and fulfilling experience. I will use this service again on future business trips.</p>
             <!-- <p><a class="btn btn-lg btn-primary" href="#" role="button">View details &raquo;</a></p> -->
           </div><!-- /.col-lg-4 -->
           <div class="col-lg-4">
             <img class="rounded-circle" src="static/images/guy2.jpeg" alt="Generic placeholder image" width="140" height="140">
             <h2 class="name_circles">Mark T.</h2>
-            <p>The app was a lifesver!! I had a gig in North Beach that I thought I would miss, but Comuteeze helped me arrive on time. I will definitely recommend it to my friends!</p>
+            <p>The app was a lifesver!! I had a gig in North Beach that I thought I would miss, but Commuteeze helped me arrive on time. I will definitely recommend it to my friends!</p>
             <!-- <p><a class="btn btn-lg btn-primary" href="#" role="button">View details &raquo;</a></p> -->
           </div><!-- /.col-lg-4 -->
         </div><!-- /.row -->
+        </div>
+        </div>
+        </div>
 
 
         <!-- START THE FEATURETTES -->
@@ -146,7 +155,7 @@
 
         <div class="row featurette">
           <div class="col-md-7 order-md-2">
-            <h2 class="featurette-heading">Oh no, it looks like uber is on surge pricing. I guess I will check to see if any bikes are available. <span class="text-muted">Siri find me a bike.</span></h2>
+            <h2 class="featurette-heading">Oh no, it looks like uber is on surge pricing. I guess I will check to see if any bikes are available. <span class="text-muted">Commuteeze find me a bike.</span></h2>
             <p class="lead">With thousands of public bikes for use across San Francisco, East Bay and San Jose. Our bike share is designed with convenience in mind; it’s a fun and affordable way to get around town.</p>
           </div>
           <div class="col-md-5 order-md-1">
@@ -158,7 +167,7 @@
 
         <div class="row featurette">
           <div class="col-md-7">
-            <h2 class="featurette-heading">Looks like it may rain today, better check the weather before I jump on this bike. <span class="text-muted">Siri what is the weather forecast?</span></h2>
+            <h2 class="featurette-heading">Looks like it may rain today, better check the weather before I jump on this bike. <span class="text-muted">Commuteeze what is the weather forecast?</span></h2>
             <p class="lead">Showers this morning, becoming a steady rain during the afternoon hours. High 52F. Winds SSW at 15 to 25 mph. Chance of rain 80%.</p>
           </div>
           <div class="col-md-5">
@@ -176,7 +185,7 @@
       <!-- FOOTER -->
       <footer class="container">
         <p class="float-right"><a href="#">Back to top</a></p>
-        <p>&copy; 2017-2018 Comuteeze, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+        <p>&copy; 2017-2018 Commuteeze, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
       </footer>
     </main>
 
