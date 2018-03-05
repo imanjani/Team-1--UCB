@@ -7,6 +7,8 @@ import pandas as pd
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
+from sqlalchemy import func, or_, and_
+from sqlalchemy import desc
 
 #############################################################################
 # USING PANDAS TO COLLECT DATA
@@ -46,9 +48,9 @@ app = Flask(__name__)
 # Main route 
 @app.route('/')
 def home():
-    return render_template('index.html', text = "Flask is rendering just fine")
+    return render_template('index.html', text = "Number of Pickups/Dropoffs according to time of day")
 
-@app.route('/info')
+@app.route('/daysnumber')
 def info():
 
     ridesharecolumns = ridesharedata.__table__.columns.keys()
@@ -57,22 +59,15 @@ def info():
 @app.route('/days/<day>')
 def day_info(day):
 
-    dow_query = (session.query(ridesharedata.trip_area, ridesharedata.latitude, ridesharedata.longitude, ridesharedata.name, 
-                    ridesharedata.day_of_week, ridesharedata.hour, ridesharedata.pickups, ridesharedata.dropoffs).filter(
-                            ridesharedata.day_of_week == day).all())
+    dow_query = (session.query(ridesharedata.hour, func.sum(ridesharedata.pickups)).
+                group_by(ridesharedata.hour).filter(ridesharedata.day_of_week == day).all())
 
     dow_list = []
 
     for each in dow_query:
         dow_dict = {}
-        dow_dict['trip_area'] = each[0]
-        dow_dict['latitude'] = each[1]
-        dow_dict['longitude'] = each[2]
-        dow_dict['name'] = each[3]
-        dow_dict['day_of_week'] = each[4]
-        dow_dict['hour'] = each[5]
-        dow_dict['pickups'] = each[6]
-        dow_dict['dropoffs'] = each[7]
+        dow_dict['hour'] = each[0]
+        dow_dict['total_pickups'] = each[1]
         dow_list.append(dow_dict)
 
     return jsonify(dow_list)
@@ -91,11 +86,10 @@ def hour_info(hour):
         hour_dict['trip_area'] = each[0]
         hour_dict['latitude'] = each[1]
         hour_dict['longitude'] = each[2]
-        hour_dict['name'] = each[3]
-        hour_dict['day_of_week'] = each[4]
-        hour_dict['hour'] = each[5]
-        hour_dict['pickups'] = each[6]
-        hour_dict['dropoffs'] = each[7]
+        hour_dict['day_of_week'] = each[3]
+        hour_dict['hour'] = each[4]
+        hour_dict['pickups'] = each[5]
+        hour_dict['dropoffs'] = each[6]
         hour_list.append(hour_dict)
 
     return jsonify(hour_list)
