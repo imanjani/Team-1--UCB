@@ -1,5 +1,4 @@
 # Import dependencies
-#
 from flask import Flask, render_template, jsonify
 
 import os
@@ -57,8 +56,8 @@ def info():
     ridesharecolumns = ridesharedata.__table__.columns.keys()
     return jsonify(ridesharecolumns)
 
-@app.route('/days/<day>')
-def day_info(day):
+@app.route('/pickups/<day>')
+def pickup_info(day):
 
     dow_query = (session.query(ridesharedata.hour, func.sum(ridesharedata.pickups)).
                 group_by(ridesharedata.hour).filter(ridesharedata.day_of_week == day).all())
@@ -69,6 +68,22 @@ def day_info(day):
         dow_dict = {}
         dow_dict['hour'] = each[0]
         dow_dict['total_pickups'] = each[1]
+        dow_list.append(dow_dict)
+
+    return jsonify(dow_list)
+
+@app.route('/dropoffs/<day>')
+def dropoff_info(day):
+
+    dow_query = (session.query(ridesharedata.hour, func.sum(ridesharedata.dropoffs)).
+                group_by(ridesharedata.hour).filter(ridesharedata.day_of_week == day).all())
+
+    dow_list = []
+
+    for each in dow_query:
+        dow_dict = {}
+        dow_dict['hour'] = each[0]
+        dow_dict['total_dropoffs'] = each[1]
         dow_list.append(dow_dict)
 
     return jsonify(dow_list)
