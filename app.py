@@ -60,9 +60,13 @@ def home():
 def ourmap():
     return render_template("map.html")
 
-@app.route("/al")
-def al():
-    return render_template("al.html")
+@app.route("/Albert")
+def Albert():
+    return render_template("Albert.html")
+
+@app.route("/Iman")
+def Iman():
+    return render_template("Iman.html")
 
 
 @app.route('/info')
