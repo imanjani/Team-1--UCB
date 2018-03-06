@@ -34,12 +34,18 @@
       <div id="plot-1"></div>
       <p>{{text}}</p>
     </div>
+    <div class="col-md-12"></div>
     <div class="col-md-2 col-md-4 col-md-12">
       <nav class="btn btn-primary" id="navbar"><strong>Select Sample<br></strong>
-        <select class="btn btn-primary dropdown-toggle center" id="selDataset" onchange="optionChanged(this.value)"></select>
+        <select class="btn btn-primary dropdown-toggle center" id="seltypeDataset"></select>
+      </nav>
+  </div>
+    <div class="col-md-2 col-md-4 col-md-12">
+      <nav class="btn btn-primary" id="navbar"><strong>Select Sample<br></strong>
+        <select class="btn btn-primary dropdown-toggle center" id="selDataset" onchange="optionChanged(this.value, seltypeDataset.value)"></select>
       </nav>
     </div>
-
+    <div class="col-md-12"></div>
     <div>
       <div class="col-md-12">
         <h3>{{text2}}</h3></div>
@@ -68,6 +74,8 @@
     
     var response = [0, 1, 2, 3, 4, 5, 6];
     var translatedresponse = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    var pickdrop = ["pickups", "dropoffs"];
+    var translatedpickdrop = ["Pickup", "Dropoff"];
     for (var i = 0; i < response.length; i++) {
       var selectClick = document.getElementById("selDataset");
       var selectOption = document.createElement("option");
@@ -75,11 +83,20 @@
       selectOption.innerHTML = translatedresponse[i];
       selectClick.append(selectOption);
     }
+    for (var i =0; i<pickdrop.length;i++) {
+      var selectClick = document.getElementById("seltypeDataset");
+      var selectOption = document.createElement("option");
+      selectOption.value = pickdrop[i];
+      selectOption.innerHTML = translatedpickdrop[i];
+      selectClick.append(selectOption);
+    }
 
-    function optionChanged(value) {
-      var daysURL = "/days/" + value;
+    function optionChanged(value, anothervalue) {
+
+      var daysURL = "/" + anothervalue + "/" + value;
 
       console.log(daysURL);
+      console.log("wakka wakka " + anothervalue);
 
       Plotly.d3.json(daysURL, function (error, response) {
         if (error) return console.warn(error);
@@ -88,7 +105,12 @@
         var yValues = [];
         for (var i=0; i<response.length; i++) {
           xValues.push(response[i].hour);
-          yValues.push(response[i].total_pickups);
+          if (anothervalue == "dropoffs") {
+            yValues.push(response[i].total_dropoffs);
+          }
+          else {
+            yValues.push(response[i].total_pickups);
+          }
         }
         console.log(xValues);
         console.log(yValues);
@@ -103,7 +125,7 @@
         Plotly.newPlot('plot-1', data);
       })
     }
-//
+
 
   </script>
 </div>
