@@ -36,7 +36,6 @@ ridesharedata = Base.classes.rideshare
 
 session = Session(engine)
 
-
 ##############################################################################
 
 app = Flask(__name__)
