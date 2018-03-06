@@ -18,6 +18,10 @@
 
     <!-- App CSS -->
     <link href="../static/css/app.css" rel="stylesheet">
+
+    <!-- JQuery -->
+    <link href="../static/js/jquery.js" rel="stylesheet">
+
   </head>
   <body>
 
@@ -36,7 +40,10 @@
               <a class="nav-link" href="{{ url_for('ourmap') }}">Map</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('al') }}">al</a>
+               <a class="nav-link" href="{{ url_for('Albert') }}">Albert</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('Iman') }}">Iman</a>
             </li>
           </ul>
           <form class="form-inline mt-2 mt-md-0">
@@ -193,9 +200,9 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <script src="../../../../assets/js/vendor/popper.min.js"></script>
-    <script src="../../../../dist/js/bootstrap.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/static/js/jquery-slim.min.js"><\/script>')</script>
+    <script src="/static/js/popper.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
    
   </body>
 </html>
