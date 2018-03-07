@@ -1,0 +1,46 @@
+
+
+.home_head {
+    font-family: 'Special Elite', cursive;
+    font-size: 48px;
+    color:whitesmoke;
+  }
+
+  .home_btn {
+    font-family: 'Special Elite', cursive;
+    font-size: 24px;
+    color:whitesmoke;
+}
+
+.name_circles {
+    font-family: 'Special Elite', cursive;
+    font-size: 32px;
+    color:black;
+}
+
+.name_circles_title {
+    font-family: 'Special Elite', cursive;
+    font-size: 48px;
+    color:black;
+} 
+
+.maps_head {
+    font-family: 'Special Elite', cursive;
+    font-size: 48px;
+    color:black;
+}
+
+
+html,
+body,
+#map-id {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.info.legend {
+  background-color: white;
+  padding: 1em;
+  opacity: 0.6;
+}
