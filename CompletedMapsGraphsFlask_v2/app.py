@@ -48,12 +48,17 @@ app = Flask(__name__)
 # Main route 
 @app.route('/')
 def home():
-    return render_template('index.html', text = "Number of Pickups/Dropoffs according to time of day")
+    return render_template('index.html')
 
 @app.route('/map')
 def heatmap():
     
     return render_template('map.html')
+
+@app.route('/graphs')
+def graphs():
+    
+    return render_template('graphs.html', text = "Uber Charts")
 
 @app.route('/columns')
 def info():
