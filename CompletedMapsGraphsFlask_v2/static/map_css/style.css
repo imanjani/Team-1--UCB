@@ -1,0 +1,17 @@
+html,
+body,
+#map-id {
+  height: 100%;
+  padding: 20em;
+  margin: 20em;
+}
+
+.info.legend {
+  background-color: white;
+  padding: 1em;
+  opacity: 0.6;
+}
+
+.jumbotron {
+  min-height: 600px;
+}

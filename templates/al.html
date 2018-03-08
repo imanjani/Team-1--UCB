@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Acme|Special+Elite" rel="stylesheet">
+
+    <title>Comuteeze</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../static/js/carousel.css" rel="stylesheet">
+
+    <!-- App CSS -->
+    <link href="../static/css/app.css" rel="stylesheet">
+  </head>
+
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#">Commuteeze</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('ourmap') }}">Map</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('al') }}">al</a>
+            </li>
+          </ul>
+          <form class="form-inline mt-2 mt-md-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        </div>
+      </nav>
+    </header>
+
+    <body>
+            
+              <!-- The div that holds our map -->
+              <div id="map-id"></div>
+            
+              <!-- D3 -->
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.5.0/d3.min.js"></script>
+              <!-- Leaflet JavaScript -->
+              <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+              <script type="text/javascript" src="/js/leaflet-heat.js"></script>
+              <!-- Our JavaScript -->
+              <script type="text/javascript" src="/js/logic.js"></script>
+            
+     </body>
+            
+     </html>
