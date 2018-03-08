@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <main class="hero-section">
+    <div class="container">
+      
+      <div class="section-content">
+        <h2>Discover places near you.</h2>
+        <a href="{{ url_for('login') }}" class="btn-primary">Login</a> 
+        <a href="{{ url_for('signup') }}" class="btn-primary">Sign up</a>
+        
+        <br></br>
+        <a href="{{ url_for('about') }}" class="btn-secondary">Learn more</a> 
+        
+      </div>
+
+      <div class="section-device">
+        <img src="https://cdn-images-1.medium.com/max/1600/1*qXw9NNPm5gFwj895FwYPPQ.gif">
+      </div>
+      
+      <div class="clearfix"></div>
+
+    </div>
+  </main>
+{% endblock %}
