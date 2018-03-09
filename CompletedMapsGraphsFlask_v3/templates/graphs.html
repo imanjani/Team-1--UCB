@@ -30,7 +30,7 @@
     <!-- JQuery -->
     <link href="../static/js/jquery.js" rel="stylesheet">
 
-
+    
   </head>
 
   <style>
@@ -237,7 +237,12 @@
         };
         var data = [trace1];
 
-        Plotly.newPlot('plot-1', data);
+        const layout = { 
+          xaxis: {title: "Number of Requests"},
+          yaxis: {title: "Time (hours)"}
+        };
+
+        Plotly.newPlot('plot-1', data, layout);
       })
     }
     </script>

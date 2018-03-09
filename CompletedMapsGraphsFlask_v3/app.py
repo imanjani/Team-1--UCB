@@ -83,7 +83,7 @@ def weather():
 @app.route('/graphs')
 def graphs():
     
-    return render_template('graphs.html', text = "Uber Charts")
+    return render_template('graphs.html', text = "Uber/Lyft Timecharts")
 
 @app.route('/columns')
 def info():
