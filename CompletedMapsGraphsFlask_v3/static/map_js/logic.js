@@ -95,7 +95,7 @@ d3.json(urlInfo, function(error, response) {
                 }
             };
             for (var i =0; i<carshareCoords.length;i++) {
-                carshareMarkers.push(L.marker(carshareCoords[i]).bindPopup(carsharedata[i]['Carshare Organization']))
+                carshareMarkers.push(L.marker(carshareCoords[i]).bindPopup("<b>"+carsharedata[i]['Carshare Organization']+"</b>"+"<br>"+carsharedata[i].Address))
             }
 
             var furiousDoan = L.heatLayer(weeklyHeatMap, {
