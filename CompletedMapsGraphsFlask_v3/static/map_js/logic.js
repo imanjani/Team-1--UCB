@@ -21,19 +21,42 @@ lightmap.addTo(albertsMap);
 
 var urlInfo = "https://gbfs.fordgobike.com/gbfs/en/station_information.json";
 var urlStatus = "https://gbfs.fordgobike.com/gbfs/en/station_status.json";
-var weeklyInfo = "static/Project2/avg_weeklytrip.csv"
+var weeklyInfo = "/static/Project2/avg_weeklytrip.csv"
+var carshareURL = "/static/Project2/carshare.csv"
 
-d3.json(urlInfo, function(response) {
+d3.json(urlInfo, function(error, response) {
+    if (error) {console.log(error); return (error);}
+    d3.json(urlStatus, function(error, statusdata) {
+        if (error) {console.log(error); return (error);}
+        d3.csv(weeklyInfo, function(error, weeklydata) {
+            if (error) {console.log(error); return (error);}
+            d3.csv(carshareURL, function(error, carsharedata) {
+                if (error) {console.log(error); return (error);}
 
-    d3.json(urlStatus, function(statusdata) {
-
-        d3.csv(weeklyInfo, function(weeklydata) {
-
+            var carshareCoords=[];
+            var carshareMarkers=[];
             var stationMarkers=[];
             var noService=[];
             var weeklyHeatMap=[];
             var weeklyHeatMapPickup=[];
             var weeklyHeatMapDropoff=[];
+            
+            console.log(carsharedata);
+            for (var i = 0; i<carsharedata.length; i++) {
+                
+                var something = carsharedata[i].Geom.replace(")", "").replace("(", "").replace(",", "");
+                var coordsplit = something.split(" ");
+                // console.log(coordsplit);
+                // console.log(typeof(coordsplit[1]));
+                var newcoordsplit = coordsplit.map(parseFloat);
+                // console.log(coordsplit.map(parseFloat));
+                // console.log(typeof(newcoordsplit[1]));
+                carshareCoords.push(newcoordsplit);
+            };
+
+            console.log(carshareCoords);
+            console.log(carshareCoords.length);
+            console.log(carsharedata.length);
 
             for (var i=0; i< weeklydata.length; i++) {
                 var stopnumber = +weeklydata[i].pickdrop_scaled;
@@ -71,6 +94,9 @@ d3.json(urlInfo, function(response) {
                     )
                 }
             };
+            for (var i =0; i<carshareCoords.length;i++) {
+                carshareMarkers.push(L.marker(carshareCoords[i]).bindPopup(carsharedata[i]['Carshare Organization']))
+            }
 
             var furiousDoan = L.heatLayer(weeklyHeatMap, {
                 radius: 10,
@@ -86,6 +112,7 @@ d3.json(urlInfo, function(response) {
             });
             var allMarks = L.layerGroup(stationMarkers);
             var outofservice = L.layerGroup(noService);
+            var zipcar = L.layerGroup(carshareMarkers);
 
             var baseLayers = {
                 Light: lightmap,
@@ -96,13 +123,15 @@ d3.json(urlInfo, function(response) {
                 "Out of Service": outofservice,
                 Heatmap: furiousDoan,
                 Pickup: pickupHeat,
-                Dropoff: dropoffHeat
+                Dropoff: dropoffHeat,
+                "City Carshare": zipcar
             };
 
             L.control
                 .layers(baseLayers, overlayLayers) //baseLayers and overlaylayers MUST BE DEFINED ABOVE AND REQUIRED AS ARGUMENTS
                 .addTo(albertsMap);
 
+        }) //keep
         }) //keep
     }) //keep
 }) //keep
