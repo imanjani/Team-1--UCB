@@ -1,38 +1,34 @@
+# Import dependencies
+from flask import Flask, render_template, jsonify, redirect
 
-#Dependencies
-import pandas as pd 
-import numpy as np 
-import sqlalchemy 
 import os
+import pandas as pd
 
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
-from sqlalchemy import (create_engine, func, inspect)
+from sqlalchemy import create_engine, func
+from sqlalchemy import func, or_, and_
+from sqlalchemy import desc
 
-from flask import(
-    Flask,
-    render_template,
-    redirect,
-    url_for,
-    request,
-    jsonify
-)
-
-
-#Setup the DB
-# engine = create_engine("sqlite:///")
-
-# DB new var
-# Base = automap_base()
-
-#Reflect tables
-# Base.prepare(engine, reflect=True)
-
-# create session
-# session = Session(engine)
-
-#create inspector for column names
-# inspector = inspect(engine)
+import scrape_weather
+import requests as req
+from bs4 import BeautifulSoup
+import json
+import time
+#############################################################################
+# USING PANDAS TO COLLECT DATA
+#############################################################################
+# _csvpath = os.path.join('DataSets', 'belly_button_biodiversity_samples.csv')
+# #_csvpath = os.path.join('belly_button_biodiversity_samples.csv')
+# _data = pd.read_csv(_csvpath)
+# column_names = list(_data.columns)
+# del column_names[0]
+#############################################################################
+# USING SQLALCHEMY TO FIND THE sample names -- **IMPORTANT NOTE** - if running
+# queries OUTSIDE of app function, it will create a different thread, thereby
+# running another query INSIDE the app function will require another connection
+# to the DB.  **IMPORTANT NOTE**
+##############################################################################
 
 if not os.path.exists('uber_lyft_DB.sqlite'):
     raise FileNotFoundError("The UL-sqlite-file does not exist")
@@ -48,52 +44,86 @@ session = Session(engine)
 
 ##############################################################################
 
-
 app = Flask(__name__)
 
+#################################################
+# Routes
+#################################################
 
-@app.route("/")
+# Main route 
+@app.route('/')
 def home():
-    return render_template("index.html")
+    return render_template('index.html')
 
-@app.route("/map")
-def ourmap():
-    return render_template("map.html")
+@app.route('/map')
+def heatmap():
+    
+    return render_template('map.html')
 
-@app.route("/Albert")
-def Albert():
-    return render_template("Albert.html")
+@app.route('/uber')
+def uber():
+    
+    return render_template('uber.html')
 
-@app.route("/Iman")
-def Iman():
-    return render_template("Iman.html")
+@app.route('/weather')
+def weather():
+    weather_json = scrape_weather.scrape
+   
+    # description = weather_json['weather'][0]['description']
+    # humidity = weather_json['main']['humidity']
+    # wind = weather_json['wind']['speed']
+    # pressure = weather_json['main']['pressure']
+    
+    # sunrise_unix = weather_json['sys']['sunrise']
+    # sunrise = time.strftime("%I:%M %p", time.localtime(sunrise_unix))
+    # sunset_unix = weather_json['sys']['sunset']
+    # sunset = time.strftime("%I:%M %p", time.localtime(sunset_unix))
+   
+    # temp_kelvin = weather_json['main']['temp']
+    # temp_celsius = temp_kelvin-273.15
+    # temp_fahr = int(temp_kelvin*(9/5)-459.67)
 
+    return render_template("weather.html")
 
-@app.route('/info')
+@app.route('/graphs')
+def graphs():
+    
+    return render_template('graphs.html', text = "Uber/Lyft Timecharts")
+
+@app.route('/columns')
 def info():
 
     ridesharecolumns = ridesharedata.__table__.columns.keys()
     return jsonify(ridesharecolumns)
 
-@app.route('/days/<day>')
-def day_info(day):
+@app.route('/pickups/<day>')
+def pickup_info(day):
 
-    dow_query = (session.query(ridesharedata.trip_area, ridesharedata.latitude, ridesharedata.longitude, ridesharedata.name, 
-                    ridesharedata.day_of_week, ridesharedata.hour, ridesharedata.pickups, ridesharedata.dropoffs).filter(
-                            ridesharedata.day_of_week == day).all())
+    dow_query = (session.query(ridesharedata.hour, func.sum(ridesharedata.pickups)).
+                group_by(ridesharedata.hour).filter(ridesharedata.day_of_week == day).all())
 
     dow_list = []
 
     for each in dow_query:
         dow_dict = {}
-        dow_dict['trip_area'] = each[0]
-        dow_dict['latitude'] = each[1]
-        dow_dict['longitude'] = each[2]
-        dow_dict['name'] = each[3]
-        dow_dict['day_of_week'] = each[4]
-        dow_dict['hour'] = each[5]
-        dow_dict['pickups'] = each[6]
-        dow_dict['dropoffs'] = each[7]
+        dow_dict['hour'] = each[0]
+        dow_dict['total_pickups'] = each[1]
+        dow_list.append(dow_dict)
+
+    return jsonify(dow_list)
+
+@app.route('/dropoffs/<day>')
+def dropoff_info(day):
+
+    dow_query = (session.query(ridesharedata.hour, func.sum(ridesharedata.dropoffs)).
+                group_by(ridesharedata.hour).filter(ridesharedata.day_of_week == day).all())
+
+    dow_list = []
+
+    for each in dow_query:
+        dow_dict = {}
+        dow_dict['hour'] = each[0]
+        dow_dict['total_dropoffs'] = each[1]
         dow_list.append(dow_dict)
 
     return jsonify(dow_list)
@@ -112,16 +142,15 @@ def hour_info(hour):
         hour_dict['trip_area'] = each[0]
         hour_dict['latitude'] = each[1]
         hour_dict['longitude'] = each[2]
-        hour_dict['name'] = each[3]
-        hour_dict['day_of_week'] = each[4]
-        hour_dict['hour'] = each[5]
-        hour_dict['pickups'] = each[6]
-        hour_dict['dropoffs'] = each[7]
+        hour_dict['day_of_week'] = each[3]
+        hour_dict['hour'] = each[4]
+        hour_dict['pickups'] = each[5]
+        hour_dict['dropoffs'] = each[6]
         hour_list.append(hour_dict)
 
     return jsonify(hour_list)
 
 
 
-if __name__ =='__main__':
+if __name__ == "__main__":
     app.run(debug=True)
