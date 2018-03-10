@@ -60,25 +60,25 @@ def heatmap():
     
     return render_template('map.html')
 
+
 @app.route('/weather')
 def weather():
-    weather_json = scrape_weather.scrape
+    weather_json = scrape_weather.scrape()
    
-    # description = weather_json['weather'][0]['description']
+    description = weather_json['weather'][0]['description']
     # humidity = weather_json['main']['humidity']
     # wind = weather_json['wind']['speed']
-    # pressure = weather_json['main']['pressure']
-    
-    # sunrise_unix = weather_json['sys']['sunrise']
-    # sunrise = time.strftime("%I:%M %p", time.localtime(sunrise_unix))
-    # sunset_unix = weather_json['sys']['sunset']
-    # sunset = time.strftime("%I:%M %p", time.localtime(sunset_unix))
+    # pressure = weather_json['main']['pressure'] 
+    sunrise_unix = weather_json['sys']['sunrise']
+    sunrise = time.strftime("%H:%M %p", time.localtime(sunrise_unix))
+    sunset_unix = weather_json['sys']['sunset']
+    sunset = time.strftime("%H:%M %p", time.localtime(sunset_unix))
    
-    # temp_kelvin = weather_json['main']['temp']
-    # temp_celsius = temp_kelvin-273.15
-    # temp_fahr = int(temp_kelvin*(9/5)-459.67)
+    temp_kelvin = weather_json['main']['temp']
+    temp_celsius = int(temp_kelvin-273.15)
+    temp_fahr = int(temp_kelvin*(9/5)-459.67)
 
-    return render_template("weather.html")
+    return render_template("weather.html", weather_json=weather_json, description=description, sunrise=sunrise, sunset=sunset, temp_celsius=temp_celsius, temp_fahr=temp_fahr)
 
 @app.route('/graphs')
 def graphs():

@@ -1,12 +1,13 @@
 import requests as req
 from bs4 import BeautifulSoup
 import json
+import config
 
 def scrape():
 
     # Save config information
     url = 'http://api.openweathermap.org/data/2.5/weather'
-    api_key = '59c2acda2c0f58da766f95ef512afdfa'
+    api_key = config.apikey_OWM()
     city = 'San Francisco'
 
     # Build query URL
