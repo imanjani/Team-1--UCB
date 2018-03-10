@@ -160,18 +160,48 @@
       <a class="btn btn-primary btn-lg" href="/weather" role="button" align="center">Get Current Weather</a>
       <div class="col-md-4">
         <br>
+        <table class="table table-striped table-dark">
+          <tbody>
+            <tr>
+              <th scope="row"></th>
+              <td><strong>DESCRIPTION</strong></td>
+              <td>{{description}}</td>
+            </tr>
+            <tr>
+              <th scope="row"></th>
+              <td><strong>TEMPERATURE</strong></td>
+              <td>{{temp_fahr}} Fahr. / {{temp_celsius}} Cels.</td>
+            </tr>
+            <tr>
+              <th scope="row"></th>
+              <td><strong>HUMIDITY</strong></td>
+              <td>{{weather_json.main.humidity}} %</td>
+            </tr>
+            <tr>
+              <th scope="row"></th>
+              <td><strong>WIND SPEED</strong></td>
+              <td>{{weather_json.wind.speed}} m/s</td>
+            </tr>
+            <tr>
+              <th scope="row"></th>
+              <td><strong>PRESSURE</strong></td>
+              <td>{{weather_json.main.pressure}} hpa</td>
+            </tr>
+            <tr>
+              <th scope="row"></th>
+              <td><strong>SUNRISE</strong></td>
+              <td>{{sunrise}}</td>
+            </tr>
+            <tr>
+              <th scope="row"></th>
+              <td><strong>SUNSET</strong></td>
+              <td>{{sunset}}</td>
+            </tr>
+          </tbody>
+        </table>
         <br>
-        <div class="panel panel-primary">
-              <!-- <ul class="list-group">
-                  <li class="list-group-item">{{description}}</li>
-                  <li class="list-group-item">Temperature: {{temp_celsius}} C, {{temp_fahr}} F</li>
-                  <li class="list-group-item">Wind: {{wind}} meters/sec</li>
-                  <li class="list-group-item">Pressure: {{pressure}} hpa</li>
-                  <li class="list-group-item">Sunrise: {{sunrise}}</li>
-                  <li class="list-group-item">Sunset: {{sunset}}</li>
-              </ul> -->
-          </div>
-        </div>
+      <p>Source: <a href = https://openweathermap.org target="_blank">https://openweathermap.org</a></p>  
+      </div>
       </div>
     </div>
 
