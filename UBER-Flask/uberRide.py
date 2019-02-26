@@ -27,7 +27,7 @@ def ride(address):
     latA = j['latitude']
     lonA = j['longitude']  
 
-    session = Session(server_token='KbbiFngprHDYR6gfxsyK-7VmwAbXoT6kYk2nxrrN')
+    session = Session(server_token='**********')
     client = UberRidesClient(session)
     
     # address=input("please enter destination?")
